@@ -1,6 +1,6 @@
 FROM php:apache
 
-RUN apt update && apt upgrade -y && apt install git -y
+RUN apt update && apt upgrade -y && apt install nano net-tools git -y
 
 RUN rm -rf /var/www/html/index.php
 
