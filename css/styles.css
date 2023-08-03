@@ -19,3 +19,7 @@ header {
 main {
   text-align: center;
 }
+
+main p {
+  font-family: 'Courier New', Courier, monospace;
+}
