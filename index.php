@@ -14,10 +14,10 @@
   ?>
   <header>
     <h1>Welcome To My Page!</h1>
-    <h3>image v2</h3>
+    <h3>image v3 - Aug 2023</h3>
   </header>
   <main>
-    <img src="img/cat1.png" alt="cat" />
+    <img src="img/cat2.png" alt="cat" />
     <p>Server hostname: <?php echo $hostname; ?></p>
     <p>Server IP address: <?php echo $ip; ?></p>
     <p>PHP version: <?php echo $phpversion; ?></p>
