@@ -1,4 +1,4 @@
-FROM php:apache
+FROM php:8.3-apache
 
 MAINTAINER sys-ops.id
 
