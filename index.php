@@ -23,7 +23,7 @@
     <p>PHP version: <?php echo $phpversion; ?></p>
   </main>
   <footer>
-    <p>&copy; 2024 sys-ops.id</p>
+    <h5>&copy; 2024 sys-ops.id</h5>
   </footer>
 </body>
 </html>
