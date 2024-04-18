@@ -9,6 +9,8 @@
   // Get server hostname and IP address
   $hostname = gethostname();
   $ip = ($_SERVER['SERVER_ADDR'] === '127.0.0.1' || $_SERVER['SERVER_ADDR'] === '::1') ? $_SERVER['REMOTE_ADDR'] : $_SERVER['SERVER_ADDR'];
+// if ip not show can use this code
+// $ip = exec("hostname -I | awk '{print $1}'");
   // Check PHP version
   $phpversion = phpversion();
   ?>
