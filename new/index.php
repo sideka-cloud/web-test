@@ -88,27 +88,43 @@ $osVersion = getLinuxOsVersion();
 
 // Function to get Apache version
 function getApacheVersion() {
-    $apacheVersion = shell_exec('apachectl -v 2>&1');
-    if (empty($apacheVersion)) {
-        $apacheVersion = shell_exec('httpd -v 2>&1');
-    }
-    // Extract the server version from the output
-    preg_match('/Server version:\s*([^\r\n]+)/', $apacheVersion, $matches);
-    if (isset($matches[1])) {
-        return $matches[1];
-    }
+    // Try different common commands to get the Apache version
+    $commands = [
+        'apachectl -v 2>&1',
+        'httpd -v 2>&1',
+        '/usr/sbin/httpd -v 2>&1',
+        '/usr/bin/httpd -v 2>&1'
+    ];
 
-    return $apacheVersion;
+    foreach ($commands as $command) {
+        $apacheVersion = shell_exec($command);
+        if (!empty($apacheVersion)) {
+            // Extract the server version from the output
+            preg_match('/Server version:\s*(.*)/', $apacheVersion, $matches);
+            if (isset($matches[1])) {
+                return $matches[1];
+            }
+        }
+    }
+    
+    // If all commands fail, return an empty string
+    return '';
 }
 
 // Function to get Nginx version
 function getNginxVersion() {
-    $nginxVersion = shell_exec('/usr/sbin/nginx -v 2>&1');
-    preg_match('/nginx\/([^\s]+)/', $nginxVersion, $matches);
-    if (isset($matches[0])) {
-        return $matches[0];
+    if (file_exists('/usr/sbin/nginx')) {
+        $nginxVersion = shell_exec('/usr/sbin/nginx -v 2>&1');
+        if (empty($nginxVersion)) {
+        $nginxVersion = shell_exec('nginx -v 2>&1');
+        }
+        preg_match('/nginx\/([^\s]+)/', $nginxVersion, $matches);
+        if (isset($matches[0])) {
+            return $matches[0];
+        }
+        return $nginxVersion;
     }
-    return $nginxVersion;
+    return 'nginx not found';
 }
 
 // Function to check if a command returns a valid response
