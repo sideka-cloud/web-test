@@ -26,11 +26,11 @@ function getClientIP() {
     } else {
         $ip_client = $_SERVER['REMOTE_ADDR'];
     }
-    
+
     // In case of multiple IPs (comma-separated), use the first one
     $ipArray = explode(',', $ip_client);
     $ip_client = trim($ipArray[0]);
-    
+
     return $ip_client;
 }
 
@@ -104,6 +104,13 @@ function getNginxVersion() {
     return $nginxVersion;
 }
 
+// Function to get Caddy version
+function getCaddyVersion() {
+    $caddyVersion = shell_exec('caddy version 2>&1');
+    preg_match('/v[\d\.]+/', $caddyVersion, $matches);
+    return isset($matches[0]) ? "Caddy " . $matches[0] : "Unknown Caddy version";
+}
+
 // Function to check if a command returns a valid response
 function isRunning($output) {
     return !empty($output) && strpos($output, 'not found') === false;
@@ -112,6 +119,7 @@ function isRunning($output) {
 // Get Apache and Nginx versions
 $apacheVersion = getApacheVersion();
 $nginxVersion = getNginxVersion();
+$caddyVersion = getCaddyVersion();
 ?>
 
 <header>
@@ -127,7 +135,7 @@ $nginxVersion = getNginxVersion();
     <p>Kernel: <?php echo $osInfo; ?></p>
     <p>OS Info: <?php echo $osVersion; ?></p>
     <p>PHP version: <?php echo $phpversion; ?></p>
-    <p>Web Server: <?php  if (isRunning($apacheVersion)) { echo $apacheVersion; } elseif (isRunning($nginxVersion)) { echo $nginxVersion; } else { echo "";} ?></p>
+    <p>Web Server: <?php  if (isRunning($apacheVersion)) { echo $apacheVersion; } elseif (isRunning($nginxVersion)) { echo $nginxVersion; } elseif (isRunning($caddyVersion)) { echo $caddyVersion; } else { echo "";} ?></p>
 </main>
 <footer>
     <h5>&copy; 2024 sys-ops.id</h5>
