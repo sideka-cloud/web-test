@@ -85,17 +85,25 @@ $osVersion = getLinuxOsVersion();
 
 // Function to get Apache version
 function getApacheVersion() {
-    $apacheVersion = shell_exec('apachectl -v 2>&1');
-    if (empty($apacheVersion)) {
-        $apacheVersion = shell_exec('httpd -v 2>&1');
+    // Try different common commands to get the Apache version
+    $commands = [
+        'apachectl -v 2>&1',
+        'httpd -v 2>&1',
+        '/usr/sbin/httpd -v 2>&1',
+        '/usr/bin/httpd -v 2>&1'
+    ];
+    foreach ($commands as $command) {
+        $apacheVersion = shell_exec($command);
+        if (!empty($apacheVersion)) {
+            // Extract the server version from the output
+            preg_match('/Server version:\s*(.*)/', $apacheVersion, $matches);
+            if (isset($matches[1])) {
+                return $matches[1];
+            }
+        }
     }
-    // Extract the server version from the output
-    preg_match('/Server version:\s*([^\r\n]+)/', $apacheVersion, $matches);
-    if (isset($matches[1])) {
-        return $matches[1];
-    }
-
-    return $apacheVersion;
+    // If all commands fail, return an empty string
+    return '';
 }
 
 // Function to get Nginx version
