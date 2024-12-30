@@ -1,0 +1,90 @@
+<?php
+// Get server hostname and IP address
+$hostname = gethostname();
+$ip = ($_SERVER['SERVER_ADDR'] === '127.0.0.1' || $_SERVER['SERVER_ADDR'] === '::1') ? $_SERVER['REMOTE_ADDR'] : $_SERVER['SERVER_ADDR'];
+
+// Check PHP version
+$phpversion = phpversion();
+
+// Get client's IP address
+function getClientIP() {
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        return $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        return explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0];
+    }
+    return $_SERVER['REMOTE_ADDR'];
+}
+$clientIP = getClientIP();
+
+// Get CPU cores (Windows)
+function getCpuCores() {
+    return getenv('NUMBER_OF_PROCESSORS') ?: "Unknown";
+}
+
+// Get total RAM using PowerShell
+function getTotalRam() {
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        $psCommand = 'powershell -Command "Get-CimInstance Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum | ForEach-Object { [math]::Round($_.Sum / 1GB, 0) }"';
+        $output = [];
+        exec($psCommand, $output);
+        if (!empty($output) && is_numeric($output[0])) {
+            return $output[0] . " GB";
+        }
+    }
+    return "Unknown";
+}
+
+// Get OS info (Edition and Version)
+function getOsInfo() {
+    $editionCommand = 'powershell -Command "(Get-ComputerInfo).OsName"';
+    $editionOutput = [];
+    exec($editionCommand, $editionOutput);
+    $edition = isset($editionOutput[0]) ? trim($editionOutput[0]) : 'Unknown Edition';
+    return $edition;
+}
+
+// Get simplified Apache version
+function getApacheVersion() {
+    if (function_exists('apache_get_version')) {
+        $fullVersion = apache_get_version();
+        if (preg_match('/^Apache\/[^\s]+ \([^\)]+\)/', $fullVersion, $matches)) {
+            return $matches[0]; 
+        }
+    }
+    return "Unknown Web Server";
+}
+
+$cpuCores = getCpuCores();
+$totalRam = getTotalRam();
+$osInfo = getOsInfo();
+$apacheVersion = getApacheVersion();
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>sys-ops.id</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header>
+    <h1>Welcome To My Site!</h1>
+    <h3>sys-ops.id</h3>
+</header>
+<main>
+    <img src="img/cat4.png" alt="cat" />
+    <p>Server hostname: <?php echo $hostname; ?></p>
+    <p>Server IP address: <?php echo $ip; ?></p>
+    <p>Client IP address: <?php echo $clientIP; ?></p>
+    <p>CPU: <?php echo $cpuCores; ?> Core(s) | RAM: <?php echo $totalRam; ?></p>
+    <p>OS Info: <?php echo $osInfo; ?></p>
+    <p>PHP version: <?php echo $phpversion; ?></p>
+    <p>Web Server: <?php echo $apacheVersion; ?></p>
+</main>
+<footer>
+    <h5>&copy; 2024 sys-ops.id</h5>
+</footer>
+</body>
+</html>
