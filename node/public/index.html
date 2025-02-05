@@ -11,7 +11,7 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
-	    background: linear-gradient(to bottom right, #8b2ed1, #0de78c, #ff34d1);
+            background: linear-gradient(to bottom right, #8b2ed1, #0de78c, #ff34d1);
         }
 
         .navbar {
@@ -50,13 +50,16 @@
             padding: 30px 120px;
             border-radius: 10px;
             text-align: center;
-            max-width: 500px;
+            max-width: 800px; /* Increased max-width to accommodate the image */
             margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .content h1 {
             font-size: 2rem;
-	    font-weight: bold;
+            font-weight: bold;
         }
 
         .lead {
@@ -77,10 +80,22 @@
             font-weight: bold;
         }
 
+        .content img {
+            max-width: 200px; /* Adjust the size of the image */
+            margin-left: 30px; /* Add some space between the text and the image */
+            border-radius: 10px; /* Optional: Add border-radius to the image */
+        }
+
         @media (max-width: 576px) {
             .content {
                 padding: 15px 50px;
-		margin: 10px;
+                margin: 70px 10px 20px 10px;
+                flex-direction: column; /* Stack items vertically on small screens */
+            }
+
+            .content img {
+                margin-left: 0;
+                margin-top: 20px; /* Add space between text and image on small screens */
             }
         }
     </style>
@@ -89,7 +104,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-        <a class="navbar-brand" href="#">SYS-OPS.ID</a>
+        <a class="navbar-brand" href="/">SYS-OPS.ID</a>
     </div>
 </nav>
 
@@ -97,18 +112,21 @@
 
 <div class="parallax">
     <div class="content">
-        <h1>SYS-OPS.ID</h1>
-        <p class="lead">node-test</p>
-        <div class="network-info">
-            <div class="info-item"><strong>Server IP:</strong> <span id="serverIp">Loading...</span></div>
-            <div class="info-item"><strong>Client IP:</strong> <span id="clientIp">Loading...</span></div>
-            <div class="info-item"><strong>Hostname:</strong> <span id="hostname">Loading...</span></div>
+        <div>
+            <h1>SYS-OPS.ID</h1>
+            <p class="lead">node-test</p>
+            <div class="network-info">
+                <div class="info-item"><strong>Server IP:</strong> <span id="serverIp">Loading...</span></div>
+                <div class="info-item"><strong>Client IP:</strong> <span id="clientIp">Loading...</span></div>
+                <div class="info-item"><strong>Hostname:</strong> <span id="hostname">Loading...</span></div>
+            </div>
+            <div class="system-info">
+                <div class="info-item"><strong>CPU Cores:</strong> <span id="cpuCores">Loading...</span></div>
+                <div class="info-item"><strong>Total Memory:</strong> <span id="totalMemory">Loading...</span></div>
+                <div class="info-item"><strong>Kernel Version:</strong> <span id="kernelVersion">Loading...</span></div>
+            </div>
         </div>
-        <div class="system-info">
-            <div class="info-item"><strong>CPU Cores:</strong> <span id="cpuCores">Loading...</span></div>
-            <div class="info-item"><strong>Total Memory:</strong> <span id="totalMemory">Loading...</span></div>
-            <div class="info-item"><strong>Kernel Version:</strong> <span id="kernelVersion">Loading...</span></div>
-        </div>
+        <img src="/cat4.png" alt="cat">
     </div>
 </div>
 
@@ -246,4 +264,3 @@
 
 </body>
 </html>
-
