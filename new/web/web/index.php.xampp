@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sys-ops.id</title>
+    <link href="tailwind.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+
+<?php
+// Get server hostname and IP address
+$hostname = gethostname();
+$ip = ($_SERVER['SERVER_ADDR'] === '127.0.0.1' || $_SERVER['SERVER_ADDR'] === '::1') ? $_SERVER['REMOTE_ADDR'] : $_SERVER['SERVER_ADDR'];
+
+// Check PHP version
+$phpversion = phpversion();
+
+// Get client's IP address
+function getClientIP() {
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        return $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        return explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0];
+    }
+    return $_SERVER['REMOTE_ADDR'];
+}
+$clientIP = getClientIP();
+
+// Get CPU cores (Windows)
+function getCpuCores() {
+    return getenv('NUMBER_OF_PROCESSORS') ?: "Unknown";
+}
+
+// Get total RAM using PowerShell
+function getTotalRam() {
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        $psCommand = 'powershell -Command "Get-CimInstance Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum | ForEach-Object { [math]::Round($_.Sum / 1GB, 0) }"';
+        $output = [];
+        exec($psCommand, $output);
+        if (!empty($output) && is_numeric($output[0])) {
+            return $output[0] . " GB";
+        }
+    }
+    return "Unknown";
+}
+
+// Get OS info (Edition and Version)
+function getOsInfo() {
+    $editionCommand = 'powershell -Command "(Get-ComputerInfo).OsName"';
+    $editionOutput = [];
+    exec($editionCommand, $editionOutput);
+    $edition = isset($editionOutput[0]) ? trim($editionOutput[0]) : 'Unknown Edition';
+    return $edition;
+}
+
+// Get simplified Apache version
+function getApacheVersion() {
+    if (function_exists('apache_get_version')) {
+        $fullVersion = apache_get_version();
+        if (preg_match('/^Apache\/[^\s]+ \([^)]+\)/', $fullVersion, $matches)) {
+            return $matches[0]; // Extracts "Apache/2.4.58 (Win64)"
+        }
+    }
+    return "Unknown Web Server";
+}
+
+$cpuCores = getCpuCores();
+$totalRam = getTotalRam();
+$osInfo = getOsInfo();
+$apacheVersion = getApacheVersion();
+?>
+
+<div class="parallax">
+    <div class="gradient-background"></div>
+    <div id="particles-js"></div>
+    <div class="container mx-auto p-5 flex flex-wrap md:flex-nowrap items-center bg-white shadow-lg relative z-10">
+        <div class="w-full md:w-1/2 p-5 order-1 md:order-1">
+            <h1 class="text-4xl font-bold text-gray-800 flex justify-center items-center">SYS-OPS.ID</h1></br>
+            <p class="mt-4 text-gray-600">Server Hostname: <?php echo $hostname; ?> </p>
+            <p class="mt-4 text-gray-600">Server IP Address: <?php echo $ip; ?> </p>
+            <p class="mt-4 text-gray-600">Client IP Address: <?php echo $clientIP; ?> </p>
+            <p class="mt-4 text-gray-600">CPU: <?php echo $cpuCores; ?> Core(s) | RAM: <?php echo $totalRam; ?> </p>
+            <p class="mt-4 text-gray-600">OS Info: <?php echo $osInfo; ?> </p>
+            <p class="mt-4 text-gray-600">PHP Version: <?php echo $phpversion; ?> </p>
+            <p class="mt-4 text-gray-600">Web Server: <?php echo $apacheVersion; ?> </p>
+        </div>
+        <div class="w-full md:w-1/3 p-5 order-2 md:order-2 flex justify-center items-center">
+            <img src="cat.png" alt="Cat Image" class="max-w-full md:max-w-1/2 h-auto">
+        </div>
+    </div>
+</div>
+
+<script src="particles.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
