@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>sys-ops.id</title>
-    <link href="tailwind.min.css" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet">
+    <link href="assets/tailwind.min.css" rel="stylesheet">
+    <link href="assets/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body class="bg-gray-50">
+<nav class="navbar navbar-expand-lg navbar-dark">
+   <a class="navbar-brand" href="index.php">SYS-OPS.ID</a>
+</nav>
 
 <?php
 // Get server hostname and IP address
@@ -153,13 +157,13 @@ $nginxVersion = getNginxVersion();
             <p class="mt-4 text-gray-600">Server: <?php  if (isRunning($apacheVersion)) { echo $apacheVersion; } elseif (isRunning($nginxVersion)) { echo $nginxVersion; } else { echo "";} ?> </p>
         </div>
         <div class="w-full md:w-1/3 p-5 order-2 md:order-2 flex justify-center items-center">
-            <img src="cat.png" alt="Cat Image" class="max-w-full md:max-w-1/2 h-auto">
+            <img src="assets/cat.png" alt="Cat Image" class="max-w-full md:max-w-1/2 h-auto">
         </div>
     </div>
 </div>
 
-<script src="particles.min.js"></script>
-<script src="script.js"></script>
+<script src="assets/particles.min.js"></script>
+<script src="assets/script.js"></script>
 
 </body>
 </html>
