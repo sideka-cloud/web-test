@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SYS-OPS.ID</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="bootstrap.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,7 +15,7 @@
         }
 
         .navbar {
-            background-color: #212529;
+            background-color: #000000d1;
             position: fixed;
             width: 100%;
             z-index: 1000;
@@ -79,7 +79,7 @@
             background-color: #ffffff4f;
             border-radius: 4px;
             padding: 3px 8px 3px 8px;
-            box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.1);
         }
 
         .info-item strong {
@@ -94,7 +94,7 @@
 
         @media (max-width: 576px) {
             .content {
-                padding: 15px 50px;
+                padding: 20px 50px;
                 margin: 70px 10px 20px 10px;
                 flex-direction: column; /* Stack items vertically on small screens */
             }
@@ -120,7 +120,7 @@
     <div class="content">
         <div>
             <h1>SYS-OPS.ID</h1>
-            <p class="lead">node-test</p>
+            <p class="lead">sysopsid/web-test:js</p>
             <div class="network-info">
                 <div class="info-item"><strong>Server IP:</strong> <span id="serverIp">Loading...</span></div>
                 <div class="info-item"><strong>Client IP:</strong> <span id="clientIp">Loading...</span></div>
@@ -132,11 +132,11 @@
                 <div class="info-item"><strong>Kernel Version:</strong> <span id="kernelVersion">Loading...</span></div>
             </div>
         </div>
-        <img src="/cat4.png" alt="cat">
+        <img src="cat4.png" alt="cat">
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script src="particles.min.js"></script>
 <script>
     particlesJS("particles-js", {
         "particles": {
