@@ -3,7 +3,7 @@ const os = require('os');
 const { exec } = require('child_process');
 
 const app = express();
-const port = 8080;
+const port = 80;
 
 // Serve static files from the public directory
 app.use(express.static('public'));
@@ -67,3 +67,4 @@ app.get('/system-info', (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
+
